@@ -41,6 +41,7 @@
     "@storybook/addons": "6.5.9",
     "@storybook/api": "6.5.9",
     "@storybook/builder-webpack5": "6.5.9",
+    "@storybook/manager-webpack5": "6.5.9",
     "@storybook/client-logger": "6.5.9",
     "@storybook/core": "6.5.9",
     "@storybook/core-common": "6.5.9",
