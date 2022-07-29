@@ -1,0 +1,79 @@
+{
+  "name": "@storybook/aurelia",
+  "version": "6.5.9",
+  "description": "Storybook for Aurelia: Develop Aurelia Components in isolation with Hot Reloading.",
+  "keywords": [
+    "storybook"
+  ],
+  "homepage": "https://github.com/storybookjs/storybook/tree/master/app/aurelia",
+  "bugs": {
+    "url": "https://github.com/storybookjs/storybook/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storybookjs/storybook.git",
+    "directory": "app/aurelia"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/storybook"
+  },
+  "license": "MIT",
+  "main": "dist/cjs/client/index.js",
+  "module": "dist/esm/client/index.js",
+  "types": "dist/ts3.9/client/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "dist/ts3.9/*": [
+        "dist/ts3.4/*"
+      ]
+    }
+  },
+  "bin": {
+    "build-storybook": "./bin/build.js",
+    "start-storybook": "./bin/index.js",
+    "storybook-server": "./bin/index.js"
+  },
+  "scripts": {
+    "prepare": "node ../../scripts/prepare.js"
+  },
+  "dependencies": {
+    "@storybook/addons": "6.5.9",
+    "@storybook/api": "6.5.9",
+    "@storybook/client-logger": "6.5.9",
+    "@storybook/core": "6.5.9",
+    "@storybook/core-common": "6.5.9",
+    "@storybook/core-events": "6.5.9",
+    "@storybook/csf": "0.0.2--canary.7c6c115.0",
+    "@storybook/docs-tools": "6.5.9",
+    "@storybook/node-logger": "6.5.9",
+    "@storybook/semver": "^7.3.2",
+    "@storybook/store": "6.5.9",
+    "@types/node": "^17.0.41",
+    "@types/webpack-env": "^1.17.0",
+    "fork-ts-checker-webpack-plugin": "^4.1.6",
+    "global": "^4.4.0",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "read-pkg-up": "^7.0.1",
+    "ts-loader": "^9.3.1",
+    "url-loader": "^4.1.1",
+    "webpack": ">=4.0.0 <6.0.0"
+  },
+  "devDependencies": {
+    "aurelia": "2.0.0-alpha.36",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "htmlhint": "^1.1.4",
+    "sass-loader": "^13.0.0",
+    "style-loader": "^3.3.1"
+  },
+  "peerDependencies": {
+    "aurelia": ">=2.0.0-alpha.36",
+    "typescript": "^3.4.0 || >=4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "8ba485343b31df4e65fce2494a5f615d6d6c661d"
+}
