@@ -12,6 +12,6 @@ var _default = {
     cwd: __dirname
   }).packageJson,
   framework: 'aurelia',
-  frameworkPresets: [require.resolve('./framework-preset-aurelia.js')]
+  frameworkPresets: [require.resolve('./preset')]
 };
 exports.default = _default;
