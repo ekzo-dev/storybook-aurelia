@@ -45,10 +45,11 @@ export async function renderToDOM({
   } = element;
 
   if (component) {
-    var _template;
+    var _element$props$innerH, _template;
 
     const def = CustomElement.getDefinition(component);
-    template = (_template = template) !== null && _template !== void 0 ? _template : `<${def.name} ${Object.keys(def.bindables).map(key => `${def.bindables[key].attribute}.bind="${def.bindables[key].property}" `).join(' ')}  ></${def.name}>`;
+    const innerHtml = (_element$props$innerH = element.props.innerHtml) !== null && _element$props$innerH !== void 0 ? _element$props$innerH : '';
+    template = (_template = template) !== null && _template !== void 0 ? _template : `<${def.name} ${Object.values(def.bindables).map(bindable => `${bindable.attribute}.bind="${bindable.property}"`).join(' ')}>${innerHtml}</${def.name}>`;
     previousAurelia.register(component);
   }
 

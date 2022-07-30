@@ -6,4 +6,7 @@ export const previewAnnotations: StorybookConfig['previewAnnotations'] = (entrie
   // require.resolve('../client/preview/config'),
 ];
 
-export const addons: StorybookConfig['addons'] = [require.resolve('./framework-preset-aurelia')];
+export const addons: StorybookConfig['addons'] = [
+  require.resolve('./framework-preset-aurelia'),
+  require.resolve('./framework-preset-aurelia-docs'),
+];

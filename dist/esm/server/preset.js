@@ -3,4 +3,4 @@ export var previewAnnotations = function (entries = []) {
   // require.resolve('../client/preview/config'),
   ];
 };
-export var addons = [require.resolve('./framework-preset-aurelia')];
+export var addons = [require.resolve('./framework-preset-aurelia'), require.resolve('./framework-preset-aurelia-docs')];

@@ -24,7 +24,7 @@ import "core-js/modules/es.promise.js";
 import "core-js/modules/es.array.concat.js";
 import "core-js/modules/es.array.join.js";
 import "core-js/modules/es.array.map.js";
-import "core-js/modules/es.object.keys.js";
+import "core-js/modules/es.object.values.js";
 import "core-js/modules/es.object.assign.js";
 import "core-js/modules/es.symbol.js";
 import "core-js/modules/es.symbol.description.js";
@@ -48,7 +48,7 @@ export function renderToDOM(_x, _x2) {
 
 function _renderToDOM() {
   _renderToDOM = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref, domElement) {
-    var storyFn, kind, name, showMain, showError, forceRemount, _ref$storyContext, parameters, component, element, _previousAurelia, _previousAurelia$cont, template, _template, def, App, app;
+    var storyFn, kind, name, showMain, showError, forceRemount, _ref$storyContext, parameters, component, element, _previousAurelia, _previousAurelia$cont, template, _element$props$innerH, _template, def, innerHtml, App, app;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -89,9 +89,10 @@ function _renderToDOM() {
 
             if (component) {
               def = CustomElement.getDefinition(component);
-              template = (_template = template) !== null && _template !== void 0 ? _template : "<".concat(def.name, " ").concat(Object.keys(def.bindables).map(function (key) {
-                return "".concat(def.bindables[key].attribute, ".bind=\"").concat(def.bindables[key].property, "\" ");
-              }).join(' '), "  ></").concat(def.name, ">");
+              innerHtml = (_element$props$innerH = element.props.innerHtml) !== null && _element$props$innerH !== void 0 ? _element$props$innerH : '';
+              template = (_template = template) !== null && _template !== void 0 ? _template : "<".concat(def.name, " ").concat(Object.values(def.bindables).map(function (bindable) {
+                return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
+              }).join(' '), ">").concat(innerHtml, "</").concat(def.name, ">");
               previousAurelia.register(component);
             }
 

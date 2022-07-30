@@ -12,5 +12,5 @@ var previewAnnotations = function (entries = []) {
 };
 
 exports.previewAnnotations = previewAnnotations;
-var addons = [require.resolve('./framework-preset-aurelia')];
+var addons = [require.resolve('./framework-preset-aurelia'), require.resolve('./framework-preset-aurelia-docs')];
 exports.addons = addons;

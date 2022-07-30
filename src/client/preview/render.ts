@@ -44,11 +44,12 @@ export async function renderToDOM(
   let { template } = element;
   if (component) {
     const def = CustomElement.getDefinition(component);
+    const innerHtml = element.props.innerHtml ?? '';
     template =
       template ??
-      `<${def.name} ${Object.keys(def.bindables)
-        .map((key) => `${def.bindables[key].attribute}.bind="${def.bindables[key].property}" `)
-        .join(' ')}  ></${def.name}>`;
+      `<${def.name} ${Object.values(def.bindables)
+        .map((bindable) => `${bindable.attribute}.bind="${bindable.property}"`)
+        .join(' ')}>${innerHtml}</${def.name}>`;
     previousAurelia.register(component);
   }
 
