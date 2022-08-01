@@ -1,6 +1,6 @@
 /// <reference types="webpack-env" />
 /// <reference types="node" />
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 import './globals';
 import { IStorybookSection, AureliaFramework } from './types';
 interface ClientApi extends ClientStoryApi<AureliaFramework['storyResult']> {
