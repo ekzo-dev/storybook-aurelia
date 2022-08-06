@@ -1,7 +1,6 @@
 /* eslint-disable prefer-destructuring */
-import { ClientStoryApi, Loadable } from '@storybook/addons';
+import type { ClientStoryApi, Loadable } from '@storybook/addons';
 import { start } from '@storybook/core';
-
 import './globals';
 import { renderToDOM } from './render';
 import { IStorybookSection, AureliaFramework } from './types';
