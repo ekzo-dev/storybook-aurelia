@@ -24,7 +24,10 @@ function webpack(config, {
   return _objectSpread(_objectSpread({}, config), {}, {
     resolve: _objectSpread(_objectSpread({}, config.resolve), {}, {
       extensions: [...config.resolve.extensions, '.ts', '.js'],
-      modules: [...config.resolve.modules, 'src', 'node_modules']
+      modules: [...config.resolve.modules, 'src', 'node_modules'],
+      fallback: _objectSpread(_objectSpread({}, config.resolve.fallback || {}), {}, {
+        os: require.resolve('os-browserify/browser')
+      })
     }),
     module: _objectSpread(_objectSpread({}, config.module), {}, {
       rules: [...config.module.rules, {

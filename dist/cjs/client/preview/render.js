@@ -41,7 +41,7 @@ require("core-js/modules/es.object.values.js");
 
 require("core-js/modules/es.object.assign.js");
 
-var _aurelia = require("aurelia");
+var _aurelia3 = require("aurelia");
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
@@ -65,7 +65,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var previousAurelia;
+var aurelia;
 
 function renderToDOM(_x, _x2) {
   return _renderToDOM.apply(this, arguments);
@@ -73,16 +73,16 @@ function renderToDOM(_x, _x2) {
 
 function _renderToDOM() {
   _renderToDOM = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(_ref, domElement) {
-    var storyFn, kind, name, showMain, showError, forceRemount, _ref$storyContext, parameters, component, element, _previousAurelia, _previousAurelia$cont, template, _element$props$innerH, _template, def, innerHtml, App, app;
+    var storyFn, kind, name, showMain, showError, forceRemount, _ref$storyContext, parameters, component, story, _story$items, _story$components, _aurelia, _aurelia2, template, _story$props$innerHtm, _template, def, innerHtml, App, app;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             storyFn = _ref.storyFn, kind = _ref.kind, name = _ref.name, showMain = _ref.showMain, showError = _ref.showError, forceRemount = _ref.forceRemount, _ref$storyContext = _ref.storyContext, parameters = _ref$storyContext.parameters, component = _ref$storyContext.component;
-            element = storyFn();
+            story = storyFn();
 
-            if (!element) {
+            if (!story) {
               showError({
                 title: "Expecting an Aurelia component from the story: \"".concat(name, "\" of \"").concat(kind, "\"."),
                 description: "\n        Did you forget to return the Aurelia component from the story?\n        Use \"() => ({ template: '<custom-component></custom-component>' })\" when defining the story.\n      "
@@ -91,38 +91,43 @@ function _renderToDOM() {
 
             showMain();
 
-            if (!previousAurelia) {
-              _context.next = 7;
+            if (!(!aurelia || forceRemount)) {
+              _context.next = 19;
               break;
             }
 
-            _context.next = 7;
-            return previousAurelia.stop();
-
-          case 7:
-            previousAurelia = new _aurelia.Aurelia(element.container);
-
-            if (element.items && element.items.length > 0) {
-              (_previousAurelia = previousAurelia).register.apply(_previousAurelia, _toConsumableArray(element.items));
+            if (!aurelia) {
+              _context.next = 8;
+              break;
             }
 
-            if (element.components && element.components.length > 0) {
-              (_previousAurelia$cont = previousAurelia.container).register.apply(_previousAurelia$cont, _toConsumableArray(element.components));
+            _context.next = 8;
+            return aurelia.stop();
+
+          case 8:
+            aurelia = new _aurelia3.Aurelia(story.container);
+
+            if ((_story$items = story.items) !== null && _story$items !== void 0 && _story$items.length) {
+              (_aurelia = aurelia).register.apply(_aurelia, _toConsumableArray(story.items));
             }
 
-            template = element.template;
+            if ((_story$components = story.components) !== null && _story$components !== void 0 && _story$components.length) {
+              (_aurelia2 = aurelia).register.apply(_aurelia2, _toConsumableArray(story.components));
+            }
+
+            template = story.template;
 
             if (component) {
-              def = _aurelia.CustomElement.getDefinition(component);
-              innerHtml = (_element$props$innerH = element.props.innerHtml) !== null && _element$props$innerH !== void 0 ? _element$props$innerH : '';
+              def = _aurelia3.CustomElement.getDefinition(component);
+              innerHtml = (_story$props$innerHtm = story.props.innerHtml) !== null && _story$props$innerHtm !== void 0 ? _story$props$innerHtm : '';
               template = (_template = template) !== null && _template !== void 0 ? _template : "<".concat(def.name, " ").concat(Object.values(def.bindables).map(function (bindable) {
                 return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
               }).join(' '), ">").concat(innerHtml, "</").concat(def.name, ">");
-              previousAurelia.register(component);
+              aurelia.register(component);
             }
 
-            App = _aurelia.CustomElement.define({
-              name: 'app',
+            App = _aurelia3.CustomElement.define({
+              name: 'sb-app',
               template: template
             }, /*#__PURE__*/function () {
               function _class() {
@@ -131,14 +136,21 @@ function _renderToDOM() {
 
               return _createClass(_class);
             }());
-            app = Object.assign(new App(), Object.assign({}, parameters.args, element.props));
-            _context.next = 16;
-            return previousAurelia.app({
+            app = Object.assign(new App(), Object.assign({}, parameters.args, story.props));
+            _context.next = 17;
+            return aurelia.app({
               host: domElement,
               component: app
             }).start();
 
-          case 16:
+          case 17:
+            _context.next = 20;
+            break;
+
+          case 19:
+            Object.assign(aurelia.root.controller.viewModel, story.props);
+
+          case 20:
           case "end":
             return _context.stop();
         }

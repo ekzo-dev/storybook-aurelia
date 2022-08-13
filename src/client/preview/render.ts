@@ -1,8 +1,9 @@
 import type { RenderContext } from '@storybook/store';
-import { Aurelia, CustomElement, Constructable, ICustomElementViewModel } from 'aurelia';
+import { Aurelia, CustomElement } from 'aurelia';
 import { AureliaFramework } from './types';
 
-let previousAurelia: Aurelia;
+let aurelia: Aurelia;
+
 export async function renderToDOM(
   {
     storyFn,
@@ -15,9 +16,9 @@ export async function renderToDOM(
   }: RenderContext<AureliaFramework>,
   domElement: HTMLElement
 ) {
-  const element = storyFn();
+  const story = storyFn();
 
-  if (!element) {
+  if (!story) {
     showError({
       title: `Expecting an Aurelia component from the story: "${name}" of "${kind}".`,
       description: `
@@ -28,39 +29,41 @@ export async function renderToDOM(
   }
   showMain();
 
-  if (previousAurelia) {
-    await previousAurelia.stop();
+  if (!aurelia || forceRemount) {
+    if (aurelia) {
+      await aurelia.stop();
+    }
+
+    aurelia = new Aurelia(story.container);
+    if (story.items?.length) {
+      aurelia.register(...story.items);
+    }
+    if (story.components?.length) {
+      aurelia.register(...story.components);
+    }
+
+    let { template } = story;
+    if (component) {
+      const def = CustomElement.getDefinition(component);
+      const innerHtml = story.props.innerHtml ?? '';
+      template =
+        template ??
+        `<${def.name} ${Object.values(def.bindables)
+          .map((bindable) => `${bindable.attribute}.bind="${bindable.property}"`)
+          .join(' ')}>${innerHtml}</${def.name}>`;
+      aurelia.register(component);
+    }
+
+    const App = CustomElement.define({ name: 'sb-app', template }, class {});
+    const app = Object.assign(new App(), { ...parameters.args, ...story.props });
+
+    await aurelia
+      .app({
+        host: domElement,
+        component: app,
+      })
+      .start();
+  } else {
+    Object.assign(aurelia.root.controller.viewModel, story.props);
   }
-
-  previousAurelia = new Aurelia(element.container);
-  if (element.items && element.items.length > 0) {
-    previousAurelia.register(...element.items);
-  }
-
-  if (element.components && element.components.length > 0) {
-    previousAurelia.container.register(...element.components);
-  }
-
-  let { template } = element;
-  if (component) {
-    const def = CustomElement.getDefinition(component);
-    const innerHtml = element.props.innerHtml ?? '';
-    template =
-      template ??
-      `<${def.name} ${Object.values(def.bindables)
-        .map((bindable) => `${bindable.attribute}.bind="${bindable.property}"`)
-        .join(' ')}>${innerHtml}</${def.name}>`;
-    previousAurelia.register(component);
-  }
-
-  const App = CustomElement.define({ name: 'app', template }, class {});
-
-  const app = Object.assign(new App(), { ...parameters.args, ...element.props });
-
-  await previousAurelia
-    .app({
-      host: domElement,
-      component: app,
-    })
-    .start();
 }

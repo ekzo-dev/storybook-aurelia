@@ -1,7 +1,7 @@
 import "core-js/modules/es.array.reduce.js";
-import { getComponentBindables, getComponentAstData, getPropertyType, getTypeFromValue } from './metadata';
+import { getComponentBindables, getComponentAstData, getPropertyType } from './metadata';
 
-const shouldEncode = obj => obj.toString() === '[object Object]' || Array.isArray(obj);
+const isObject = obj => obj.toString() === '[object Object]';
 
 export const extractArgTypes = component => {
   if (component) {
@@ -10,18 +10,13 @@ export const extractArgTypes = component => {
     return bindables.reduce((acc, bindable) => {
       // get all available metadata
       const tsType = getPropertyType(component, bindable.property);
-      const propAstData = astData[bindable.property] || {}; // get default value
+      const propAstData = astData[bindable.property] || {}; // determine data type
+
+      const type = tsType; // get default value
 
       const {
         defaultValue
-      } = propAstData; // determine data type
-
-      let type = tsType;
-
-      if (type === 'object' && defaultValue !== undefined) {
-        type = getTypeFromValue(defaultValue);
-      } // determine appropriate control or action
-
+      } = propAstData; // determine appropriate control or action
 
       const control = type && type !== 'function' ? {
         type: type === 'string' ? 'text' : type
@@ -35,7 +30,7 @@ export const extractArgTypes = component => {
             summary: type
           } : undefined,
           defaultValue: defaultValue !== undefined ? {
-            summary: shouldEncode(defaultValue) ? JSON.stringify(defaultValue) : defaultValue
+            summary: isObject(defaultValue) ? JSON.stringify(defaultValue) : defaultValue
           } : undefined
         },
         control,

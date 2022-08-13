@@ -13,8 +13,8 @@ require("core-js/modules/es.array.map.js");
 
 var _metadata = require("./metadata");
 
-var shouldEncode = function shouldEncode(obj) {
-  return obj.toString() === '[object Object]' || Array.isArray(obj);
+var isObject = function isObject(obj) {
+  return obj.toString() === '[object Object]';
 };
 
 var extractArgTypes = function extractArgTypes(component) {
@@ -26,16 +26,11 @@ var extractArgTypes = function extractArgTypes(component) {
     return bindables.reduce(function (acc, bindable) {
       // get all available metadata
       var tsType = (0, _metadata.getPropertyType)(component, bindable.property);
-      var propAstData = astData[bindable.property] || {}; // get default value
+      var propAstData = astData[bindable.property] || {}; // determine data type
 
-      var defaultValue = propAstData.defaultValue; // determine data type
+      var type = tsType; // get default value
 
-      var type = tsType;
-
-      if (type === 'object' && defaultValue !== undefined) {
-        type = (0, _metadata.getTypeFromValue)(defaultValue);
-      } // determine appropriate control or action
-
+      var defaultValue = propAstData.defaultValue; // determine appropriate control or action
 
       var control = type && type !== 'function' ? {
         type: type === 'string' ? 'text' : type
@@ -49,7 +44,7 @@ var extractArgTypes = function extractArgTypes(component) {
             summary: type
           } : undefined,
           defaultValue: defaultValue !== undefined ? {
-            summary: shouldEncode(defaultValue) ? JSON.stringify(defaultValue) : defaultValue
+            summary: isObject(defaultValue) ? JSON.stringify(defaultValue) : defaultValue
           } : undefined
         },
         control: control,

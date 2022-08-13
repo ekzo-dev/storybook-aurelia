@@ -1,43 +1,37 @@
-import type { SBType, StrictArgTypes } from '@storybook/csf';
-import type { ArgTypesExtractor, Component } from '@storybook/docs-tools';
-import { CustomElement } from 'aurelia';
+import { ArgTypesExtractor } from '@storybook/docs-tools';
+import { StrictArgTypes } from '@storybook/csf';
+import {
+  getComponentBindables,
+  getComponentAstData,
+  getPropertyType,
+  getTypeFromValue,
+} from './metadata';
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace Reflect {
-  function getMetadata(metadataKey: any, target: any, propertyKey?: string | symbol): any;
-}
-
-const getType = (component: Component, property: string): SBType['name'] | undefined => {
-  const metadata = Reflect.getMetadata('design:type', component.prototype, property);
-
-  let type: SBType['name'];
-  switch (metadata) {
-    case String:
-      type = 'string';
-      break;
-    case Boolean:
-      type = 'boolean';
-      break;
-    case Number:
-      type = 'number';
-      break;
-    case Object:
-      type = 'object';
-      break;
-    case Function:
-      type = 'function';
-      break;
-    default:
-  }
-
-  return type;
-};
+const shouldEncode = (obj: any) => obj.toString() === '[object Object]' || Array.isArray(obj);
 
 export const extractArgTypes: ArgTypesExtractor = (component) => {
   if (component) {
-    const def = CustomElement.getDefinition(component);
-    return Object.values(def.bindables).reduce((acc: StrictArgTypes, bindable) => {
-      const type = getType(component, bindable.property);
+    const bindables = getComponentBindables(component);
+    const astData = getComponentAstData(
+      component,
+      bindables.map((bindable) => bindable.property)
+    );
+
+    return bindables.reduce((acc: StrictArgTypes, bindable) => {
+      // get all available metadata
+      const tsType = getPropertyType(component, bindable.property);
+      const propAstData = astData[bindable.property] || ({} as any);
+
+      // get default value
+      const { defaultValue } = propAstData;
+
+      // determine data type
+      let type = tsType;
+      if (type === 'object' && defaultValue !== undefined) {
+        type = getTypeFromValue(defaultValue);
+      }
+
+      // determine appropriate control or action
       const control =
         type && type !== 'function'
           ? {
@@ -48,12 +42,16 @@ export const extractArgTypes: ArgTypesExtractor = (component) => {
 
       acc[bindable.attribute] = {
         name: bindable.attribute,
-        description: bindable.property,
-        table: type
-          ? {
-              type: { summary: type },
-            }
-          : undefined,
+        defaultValue,
+        table: {
+          type: type ? { summary: type } : undefined,
+          defaultValue:
+            defaultValue !== undefined
+              ? {
+                  summary: shouldEncode(defaultValue) ? JSON.stringify(defaultValue) : defaultValue,
+                }
+              : undefined,
+        },
         control,
         action,
       };

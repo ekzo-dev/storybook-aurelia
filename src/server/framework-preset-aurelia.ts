@@ -13,6 +13,10 @@ export function webpack(
       ...config.resolve,
       extensions: [...config.resolve.extensions, '.ts', '.js'],
       modules: [...config.resolve.modules, 'src', 'node_modules'],
+      fallback: {
+        ...(config.resolve.fallback || {}),
+        os: require.resolve('os-browserify/browser'),
+      },
     },
     module: {
       ...config.module,
