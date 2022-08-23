@@ -25,10 +25,13 @@ export function webpack(config, {
       }, {
         test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
         type: 'asset'
-      }, {
+      }, // this causes a bug with MiniCssExtractPlugin used by Storybook
+
+      /* {
         test: /\.css$/i,
-        use: [require.resolve('style-loader'), require.resolve('css-loader')]
-      }, {
+        use: [require.resolve('style-loader'), require.resolve('css-loader')],
+      }, */
+      {
         test: /\.scss$/i,
         use: [require.resolve('style-loader'), require.resolve('css-loader'), require.resolve('sass-loader')]
       }, {

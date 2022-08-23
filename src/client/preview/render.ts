@@ -1,8 +1,9 @@
 import type { RenderContext } from '@storybook/store';
-import { Aurelia, CustomElement } from 'aurelia';
+import { Aurelia } from 'aurelia';
 import { AureliaFramework } from './types';
+import { createAureliaApp } from './aureliaApp';
 
-let aurelia: Aurelia;
+let aurelia: Partial<Aurelia>;
 
 export async function renderToDOM(
   {
@@ -34,35 +35,13 @@ export async function renderToDOM(
       await aurelia.stop();
     }
 
-    aurelia = new Aurelia(story.container);
-    if (story.items?.length) {
-      aurelia.register(...story.items);
-    }
-    if (story.components?.length) {
-      aurelia.register(...story.components);
-    }
-
-    let { template } = story;
-    if (component) {
-      const def = CustomElement.getDefinition(component);
-      const innerHtml = story.props.innerHtml ?? '';
-      template =
-        template ??
-        `<${def.name} ${Object.values(def.bindables)
-          .map((bindable) => `${bindable.attribute}.bind="${bindable.property}"`)
-          .join(' ')}>${innerHtml}</${def.name}>`;
-      aurelia.register(component);
-    }
-
-    const App = CustomElement.define({ name: 'sb-app', template }, class {});
-    const app = Object.assign(new App(), { ...parameters.args, ...story.props });
-
-    await aurelia
-      .app({
-        host: domElement,
-        component: app,
-      })
-      .start();
+    aurelia = createAureliaApp(
+      story,
+      component,
+      { ...parameters.args, ...story.props },
+      domElement
+    );
+    await aurelia.start();
   } else {
     Object.assign(aurelia.root.controller.viewModel, story.props);
   }

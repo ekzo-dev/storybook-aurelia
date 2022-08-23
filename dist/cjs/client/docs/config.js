@@ -9,9 +9,12 @@ var _docsTools = require("@storybook/docs-tools");
 
 var _extractArgTypes = require("./extractArgTypes");
 
+var _prepareForInline = require("./prepareForInline");
+
 var parameters = {
   docs: {
     inlineStories: false,
+    prepareForInline: _prepareForInline.prepareForInline,
     extractArgTypes: _extractArgTypes.extractArgTypes,
     extractComponentDescription: _docsTools.extractComponentDescription
   }
