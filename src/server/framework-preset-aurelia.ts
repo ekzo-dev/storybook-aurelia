@@ -22,19 +22,7 @@ export function webpack(
       ...config.module,
       rules: [
         ...config.module.rules,
-        {
-          test: /\.(png|svg|jpg|jpeg|gif)$/i,
-          type: 'asset',
-        },
-        {
-          test: /\.(woff|woff2|ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i,
-          type: 'asset',
-        },
-        // this causes a bug with MiniCssExtractPlugin used by Storybook
-        /* {
-          test: /\.css$/i,
-          use: [require.resolve('style-loader'), require.resolve('css-loader')],
-        }, */
+        // storybook already has loaders for images/fonts/css
         {
           test: /\.scss$/i,
           use: [

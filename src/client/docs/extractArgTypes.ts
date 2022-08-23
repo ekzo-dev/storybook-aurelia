@@ -40,7 +40,7 @@ export const extractArgTypes: ArgTypesExtractor = (component) => {
           : undefined;
       const action = type === 'function' ? bindable.property : undefined;
 
-      acc[bindable.attribute] = {
+      acc[bindable.property] = {
         name: bindable.attribute,
         defaultValue,
         table: {

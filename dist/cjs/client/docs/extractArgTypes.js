@@ -41,7 +41,7 @@ var extractArgTypes = function extractArgTypes(component) {
         type: type === 'string' ? 'text' : type
       } : undefined;
       var action = type === 'function' ? bindable.property : undefined;
-      acc[bindable.attribute] = {
+      acc[bindable.property] = {
         name: bindable.attribute,
         defaultValue: defaultValue,
         table: {
