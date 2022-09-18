@@ -7,7 +7,7 @@ import {
   getTypeFromValue,
 } from './metadata';
 
-const shouldEncode = (obj: any) => obj.toString() === '[object Object]' || Array.isArray(obj);
+const shouldEncode = (obj: any) => obj?.toString() === '[object Object]' || Array.isArray(obj);
 
 export const extractArgTypes: ArgTypesExtractor = (component) => {
   if (component) {
@@ -38,7 +38,6 @@ export const extractArgTypes: ArgTypesExtractor = (component) => {
               type: type === 'string' ? 'text' : type,
             }
           : undefined;
-      const action = type === 'function' ? bindable.property : undefined;
 
       acc[bindable.property] = {
         name: bindable.attribute,
@@ -53,7 +52,6 @@ export const extractArgTypes: ArgTypesExtractor = (component) => {
               : undefined,
         },
         control,
-        action,
       };
 
       return acc;

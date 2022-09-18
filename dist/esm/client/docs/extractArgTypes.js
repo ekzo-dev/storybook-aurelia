@@ -4,7 +4,7 @@ import "core-js/modules/es.array.map.js";
 import { getComponentBindables, getComponentAstData, getPropertyType, getTypeFromValue } from './metadata';
 
 var shouldEncode = function shouldEncode(obj) {
-  return obj.toString() === '[object Object]' || Array.isArray(obj);
+  return (obj === null || obj === void 0 ? void 0 : obj.toString()) === '[object Object]' || Array.isArray(obj);
 };
 
 export var extractArgTypes = function extractArgTypes(component) {
@@ -30,7 +30,6 @@ export var extractArgTypes = function extractArgTypes(component) {
       var control = type && type !== 'function' ? {
         type: type === 'string' ? 'text' : type
       } : undefined;
-      var action = type === 'function' ? bindable.property : undefined;
       acc[bindable.property] = {
         name: bindable.attribute,
         defaultValue: defaultValue,
@@ -42,8 +41,7 @@ export var extractArgTypes = function extractArgTypes(component) {
             summary: shouldEncode(defaultValue) ? JSON.stringify(defaultValue) : defaultValue
           } : undefined
         },
-        control: control,
-        action: action
+        control: control
       };
       return acc;
     }, {});

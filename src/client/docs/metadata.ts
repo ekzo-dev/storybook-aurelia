@@ -31,7 +31,7 @@ export const getComponentAstData = (
 
       if (
         left.type === 'MemberExpression' &&
-        left.object.type === 'ThisExpression' &&
+        (left.object.type === 'ThisExpression' || (left.object as Identifier).name === '_this') &&
         ['Literal', 'ObjectExpression', 'ArrayExpression'].includes(right.type)
       ) {
         const { name } = (left as MemberExpression).property as Identifier;

@@ -27,9 +27,9 @@ require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.regexp.to-string.js");
 
-require("core-js/modules/es.array.includes.js");
-
 require("core-js/modules/es.function.name.js");
+
+require("core-js/modules/es.array.includes.js");
 
 require("core-js/modules/es.string.includes.js");
 
@@ -63,7 +63,7 @@ var getComponentAstData = function getComponentAstData(component, properties) {
       var left = value.left,
           right = value.right;
 
-      if (left.type === 'MemberExpression' && left.object.type === 'ThisExpression' && ['Literal', 'ObjectExpression', 'ArrayExpression'].includes(right.type)) {
+      if (left.type === 'MemberExpression' && (left.object.type === 'ThisExpression' || left.object.name === '_this') && ['Literal', 'ObjectExpression', 'ArrayExpression'].includes(right.type)) {
         var _ref2 = left.property,
             name = _ref2.name;
 

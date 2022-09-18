@@ -1,7 +1,7 @@
 import "core-js/modules/es.array.reduce.js";
 import { getComponentBindables, getComponentAstData, getPropertyType, getTypeFromValue } from './metadata';
 
-const shouldEncode = obj => obj.toString() === '[object Object]' || Array.isArray(obj);
+const shouldEncode = obj => (obj === null || obj === void 0 ? void 0 : obj.toString()) === '[object Object]' || Array.isArray(obj);
 
 export const extractArgTypes = component => {
   if (component) {
@@ -26,7 +26,6 @@ export const extractArgTypes = component => {
       const control = type && type !== 'function' ? {
         type: type === 'string' ? 'text' : type
       } : undefined;
-      const action = type === 'function' ? bindable.property : undefined;
       acc[bindable.property] = {
         name: bindable.attribute,
         defaultValue,
@@ -38,8 +37,7 @@ export const extractArgTypes = component => {
             summary: shouldEncode(defaultValue) ? JSON.stringify(defaultValue) : defaultValue
           } : undefined
         },
-        control,
-        action
+        control
       };
       return acc;
     }, {});

@@ -3,8 +3,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 import "core-js/modules/es.object.values.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.regexp.to-string.js";
-import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
 import "core-js/modules/es.number.constructor.js";
 import "core-js/modules/es.symbol.js";
@@ -30,7 +30,7 @@ export var getComponentAstData = function getComponentAstData(component, propert
       var left = value.left,
           right = value.right;
 
-      if (left.type === 'MemberExpression' && left.object.type === 'ThisExpression' && ['Literal', 'ObjectExpression', 'ArrayExpression'].includes(right.type)) {
+      if (left.type === 'MemberExpression' && (left.object.type === 'ThisExpression' || left.object.name === '_this') && ['Literal', 'ObjectExpression', 'ArrayExpression'].includes(right.type)) {
         var _ref2 = left.property,
             name = _ref2.name;
 
