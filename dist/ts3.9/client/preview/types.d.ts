@@ -9,6 +9,7 @@ export interface StoryFnAureliaReturnType {
     template?: string;
     items?: IRegistry[];
     container?: IContainer;
+    innerHtml?: string;
 }
 export declare type AureliaFramework = {
     component: ICustomElementViewModel & Constructable;

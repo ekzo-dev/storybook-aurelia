@@ -18,12 +18,11 @@ export function createAureliaApp(
   let { template } = story;
   if (component) {
     const def = CustomElement.getDefinition(component);
-    const innerHtml = args.innerHtml ?? '';
     template =
       template ??
       `<${def.name} ${Object.values(def.bindables)
         .map((bindable) => `${bindable.attribute}.bind="${bindable.property}"`)
-        .join(' ')}>${innerHtml}</${def.name}>`;
+        .join(' ')}>${story.innerHtml ?? ''}</${def.name}>`;
     aurelia.register(component);
   }
 

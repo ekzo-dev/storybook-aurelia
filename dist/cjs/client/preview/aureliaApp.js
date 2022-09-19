@@ -73,14 +73,13 @@ function createAureliaApp(story, component, args, domElement) {
   var template = story.template;
 
   if (component) {
-    var _args$innerHtml, _template;
+    var _template, _story$innerHtml;
 
     var def = _aurelia.CustomElement.getDefinition(component);
 
-    var innerHtml = (_args$innerHtml = args.innerHtml) !== null && _args$innerHtml !== void 0 ? _args$innerHtml : '';
     template = (_template = template) !== null && _template !== void 0 ? _template : "<".concat(def.name, " ").concat(Object.values(def.bindables).map(function (bindable) {
       return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
-    }).join(' '), ">").concat(innerHtml, "</").concat(def.name, ">");
+    }).join(' '), ">").concat((_story$innerHtml = story.innerHtml) !== null && _story$innerHtml !== void 0 ? _story$innerHtml : '', "</").concat(def.name, ">");
     aurelia.register(component);
   }
 

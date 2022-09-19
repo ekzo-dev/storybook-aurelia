@@ -17,11 +17,10 @@ export function createAureliaApp(story, component, args, domElement) {
   } = story;
 
   if (component) {
-    var _args$innerHtml, _template;
+    var _template, _story$innerHtml;
 
     const def = CustomElement.getDefinition(component);
-    const innerHtml = (_args$innerHtml = args.innerHtml) !== null && _args$innerHtml !== void 0 ? _args$innerHtml : '';
-    template = (_template = template) !== null && _template !== void 0 ? _template : `<${def.name} ${Object.values(def.bindables).map(bindable => `${bindable.attribute}.bind="${bindable.property}"`).join(' ')}>${innerHtml}</${def.name}>`;
+    template = (_template = template) !== null && _template !== void 0 ? _template : `<${def.name} ${Object.values(def.bindables).map(bindable => `${bindable.attribute}.bind="${bindable.property}"`).join(' ')}>${(_story$innerHtml = story.innerHtml) !== null && _story$innerHtml !== void 0 ? _story$innerHtml : ''}</${def.name}>`;
     aurelia.register(component);
   }
 

@@ -18,6 +18,7 @@ export interface StoryFnAureliaReturnType {
   template?: string;
   items?: IRegistry[];
   container?: IContainer;
+  innerHtml?: string;
 }
 
 export type AureliaFramework = {
