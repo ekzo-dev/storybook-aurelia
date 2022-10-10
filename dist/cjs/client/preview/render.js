@@ -17,7 +17,7 @@ require("core-js/modules/es.array.concat.js");
 
 require("core-js/modules/es.object.assign.js");
 
-var _aureliaApp = require("./aureliaApp");
+var _aurelia = require("./aurelia");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
@@ -63,7 +63,7 @@ function _renderToDOM() {
             return aurelia.stop();
 
           case 8:
-            aurelia = (0, _aureliaApp.createAureliaApp)(story, component, Object.assign({}, parameters.args, story.props), domElement);
+            aurelia = (0, _aurelia.createAureliaApp)(story, component, Object.assign({}, parameters.args, story.props), domElement);
             _context.next = 11;
             return aurelia.start();
 

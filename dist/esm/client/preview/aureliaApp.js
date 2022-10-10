@@ -57,11 +57,13 @@ export function createAureliaApp(story, component, args, domElement) {
       return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
     }).join(' '), ">").concat((_story$innerHtml = story.innerHtml) !== null && _story$innerHtml !== void 0 ? _story$innerHtml : '', "</").concat(def.name, ">");
     aurelia.register(component);
-  }
+  } // TODO: try make app element containerless if it makes sense for event handling
+
 
   var App = CustomElement.define({
     name: 'sb-app',
-    template: template
+    template: template,
+    containerless: true
   }, /*#__PURE__*/function () {
     function _class() {
       _classCallCheck(this, _class);

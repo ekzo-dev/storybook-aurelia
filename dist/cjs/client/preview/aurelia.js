@@ -24,6 +24,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.createAureliaApp = createAureliaApp;
+exports.createComponentTemplate = createComponentTemplate;
 
 require("core-js/modules/es.array.concat.js");
 
@@ -57,6 +58,14 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function createComponentTemplate(component, innerHtml) {
+  var def = _aurelia.CustomElement.getDefinition(component);
+
+  return "<".concat(def.name, " ").concat(Object.values(def.bindables).map(function (bindable) {
+    return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
+  }).join(' '), ">").concat(innerHtml !== null && innerHtml !== void 0 ? innerHtml : '', "</").concat(def.name, ">");
+}
+
 function createAureliaApp(story, component, args, domElement) {
   var _story$items, _story$components;
 
@@ -73,16 +82,11 @@ function createAureliaApp(story, component, args, domElement) {
   var template = story.template;
 
   if (component) {
-    var _template, _story$innerHtml;
+    var _template;
 
-    var def = _aurelia.CustomElement.getDefinition(component);
-
-    template = (_template = template) !== null && _template !== void 0 ? _template : "<".concat(def.name, " ").concat(Object.values(def.bindables).map(function (bindable) {
-      return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
-    }).join(' '), ">").concat((_story$innerHtml = story.innerHtml) !== null && _story$innerHtml !== void 0 ? _story$innerHtml : '', "</").concat(def.name, ">");
+    template = (_template = template) !== null && _template !== void 0 ? _template : createComponentTemplate(component, story.innerHtml);
     aurelia.register(component);
-  } // TODO: try make app element containerless if it makes sense for event handling
-
+  }
 
   var App = _aurelia.CustomElement.define({
     name: 'sb-app',

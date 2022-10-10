@@ -1,44 +1,3 @@
-"use strict";
-
-require("core-js/modules/es.symbol.js");
-
-require("core-js/modules/es.symbol.description.js");
-
-require("core-js/modules/es.object.to-string.js");
-
-require("core-js/modules/es.symbol.iterator.js");
-
-require("core-js/modules/es.array.iterator.js");
-
-require("core-js/modules/es.string.iterator.js");
-
-require("core-js/modules/web.dom-collections.iterator.js");
-
-require("core-js/modules/es.array.from.js");
-
-require("core-js/modules/es.array.slice.js");
-
-require("core-js/modules/es.regexp.exec.js");
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.createAureliaApp = createAureliaApp;
-
-require("core-js/modules/es.array.concat.js");
-
-require("core-js/modules/es.function.name.js");
-
-require("core-js/modules/es.array.join.js");
-
-require("core-js/modules/es.array.map.js");
-
-require("core-js/modules/es.object.values.js");
-
-require("core-js/modules/es.object.assign.js");
-
-var _aurelia = require("aurelia");
-
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
@@ -57,10 +16,33 @@ function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToAr
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-function createAureliaApp(story, component, args, domElement) {
+import "core-js/modules/es.array.concat.js";
+import "core-js/modules/es.function.name.js";
+import "core-js/modules/es.array.join.js";
+import "core-js/modules/es.array.map.js";
+import "core-js/modules/es.object.values.js";
+import "core-js/modules/es.object.assign.js";
+import "core-js/modules/es.symbol.js";
+import "core-js/modules/es.symbol.description.js";
+import "core-js/modules/es.object.to-string.js";
+import "core-js/modules/es.symbol.iterator.js";
+import "core-js/modules/es.array.iterator.js";
+import "core-js/modules/es.string.iterator.js";
+import "core-js/modules/web.dom-collections.iterator.js";
+import "core-js/modules/es.array.from.js";
+import "core-js/modules/es.array.slice.js";
+import "core-js/modules/es.regexp.exec.js";
+import { Aurelia, CustomElement } from 'aurelia';
+export function createComponentTemplate(component, innerHtml) {
+  var def = CustomElement.getDefinition(component);
+  return "<".concat(def.name, " ").concat(Object.values(def.bindables).map(function (bindable) {
+    return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
+  }).join(' '), ">").concat(innerHtml !== null && innerHtml !== void 0 ? innerHtml : '', "</").concat(def.name, ">");
+}
+export function createAureliaApp(story, component, args, domElement) {
   var _story$items, _story$components;
 
-  var aurelia = new _aurelia.Aurelia(story.container);
+  var aurelia = new Aurelia(story.container);
 
   if ((_story$items = story.items) !== null && _story$items !== void 0 && _story$items.length) {
     aurelia.register.apply(aurelia, _toConsumableArray(story.items));
@@ -73,18 +55,13 @@ function createAureliaApp(story, component, args, domElement) {
   var template = story.template;
 
   if (component) {
-    var _template, _story$innerHtml;
+    var _template;
 
-    var def = _aurelia.CustomElement.getDefinition(component);
-
-    template = (_template = template) !== null && _template !== void 0 ? _template : "<".concat(def.name, " ").concat(Object.values(def.bindables).map(function (bindable) {
-      return "".concat(bindable.attribute, ".bind=\"").concat(bindable.property, "\"");
-    }).join(' '), ">").concat((_story$innerHtml = story.innerHtml) !== null && _story$innerHtml !== void 0 ? _story$innerHtml : '', "</").concat(def.name, ">");
+    template = (_template = template) !== null && _template !== void 0 ? _template : createComponentTemplate(component, story.innerHtml);
     aurelia.register(component);
-  } // TODO: try make app element containerless if it makes sense for event handling
+  }
 
-
-  var App = _aurelia.CustomElement.define({
+  var App = CustomElement.define({
     name: 'sb-app',
     template: template,
     containerless: true
@@ -95,7 +72,6 @@ function createAureliaApp(story, component, args, domElement) {
 
     return _createClass(_class);
   }());
-
   var app = Object.assign(new App(), args);
   return aurelia.app({
     host: domElement,

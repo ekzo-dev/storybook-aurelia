@@ -1,4 +1,8 @@
 import { Aurelia, CustomElement } from 'aurelia';
+export function createComponentTemplate(component, innerHtml) {
+  const def = CustomElement.getDefinition(component);
+  return `<${def.name} ${Object.values(def.bindables).map(bindable => `${bindable.attribute}.bind="${bindable.property}"`).join(' ')}>${innerHtml !== null && innerHtml !== void 0 ? innerHtml : ''}</${def.name}>`;
+}
 export function createAureliaApp(story, component, args, domElement) {
   var _story$items, _story$components;
 
@@ -17,13 +21,11 @@ export function createAureliaApp(story, component, args, domElement) {
   } = story;
 
   if (component) {
-    var _template, _story$innerHtml;
+    var _template;
 
-    const def = CustomElement.getDefinition(component);
-    template = (_template = template) !== null && _template !== void 0 ? _template : `<${def.name} ${Object.values(def.bindables).map(bindable => `${bindable.attribute}.bind="${bindable.property}"`).join(' ')}>${(_story$innerHtml = story.innerHtml) !== null && _story$innerHtml !== void 0 ? _story$innerHtml : ''}</${def.name}>`;
+    template = (_template = template) !== null && _template !== void 0 ? _template : createComponentTemplate(component, story.innerHtml);
     aurelia.register(component);
-  } // TODO: try make app element containerless if it makes sense for event handling
-
+  }
 
   const App = CustomElement.define({
     name: 'sb-app',

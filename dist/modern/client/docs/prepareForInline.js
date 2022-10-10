@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { createAureliaApp } from '../preview/aureliaApp';
+import { createAureliaApp } from '../preview/aurelia';
 export const prepareForInline = (storyFn, {
   args,
   component

@@ -1,7 +1,7 @@
 import type { RenderContext } from '@storybook/store';
 import { Aurelia } from 'aurelia';
 import { AureliaFramework } from './types';
-import { createAureliaApp } from './aureliaApp';
+import { createAureliaApp } from './aurelia';
 
 let aurelia: Partial<Aurelia>;
 

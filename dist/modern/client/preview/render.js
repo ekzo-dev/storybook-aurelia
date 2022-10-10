@@ -1,4 +1,4 @@
-import { createAureliaApp } from './aureliaApp';
+import { createAureliaApp } from './aurelia';
 let aurelia;
 export async function renderToDOM({
   storyFn,

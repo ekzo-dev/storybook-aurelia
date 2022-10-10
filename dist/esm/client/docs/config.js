@@ -1,6 +1,7 @@
 import { extractComponentDescription, enhanceArgTypes } from '@storybook/docs-tools';
 import { extractArgTypes } from './extractArgTypes';
 import { prepareForInline } from './prepareForInline';
+import { sourceDecorator } from './sourceDecorator';
 export var parameters = {
   docs: {
     inlineStories: false,
@@ -9,4 +10,5 @@ export var parameters = {
     extractComponentDescription: extractComponentDescription
   }
 };
+export var decorators = [sourceDecorator];
 export var argTypesEnhancers = [enhanceArgTypes];

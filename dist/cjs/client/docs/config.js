@@ -3,13 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.parameters = exports.argTypesEnhancers = void 0;
+exports.parameters = exports.decorators = exports.argTypesEnhancers = void 0;
 
 var _docsTools = require("@storybook/docs-tools");
 
 var _extractArgTypes = require("./extractArgTypes");
 
 var _prepareForInline = require("./prepareForInline");
+
+var _sourceDecorator = require("./sourceDecorator");
 
 var parameters = {
   docs: {
@@ -20,5 +22,7 @@ var parameters = {
   }
 };
 exports.parameters = parameters;
+var decorators = [_sourceDecorator.sourceDecorator];
+exports.decorators = decorators;
 var argTypesEnhancers = [_docsTools.enhanceArgTypes];
 exports.argTypesEnhancers = argTypesEnhancers;
