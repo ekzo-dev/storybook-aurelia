@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import type { StoryContext, PartialStoryFn } from '@storybook/csf';
 import { AureliaFramework } from '../preview';
-import { createAureliaApp } from '../preview/aurelia';
+import { createAureliaApp } from '../helpers';
 
 export const prepareForInline = (
   storyFn: PartialStoryFn<AureliaFramework>,

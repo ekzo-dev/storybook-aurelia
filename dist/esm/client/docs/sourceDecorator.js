@@ -1,6 +1,6 @@
 import { addons, useEffect } from '@storybook/addons';
 import { SourceType, SNIPPET_RENDERED } from '@storybook/docs-tools';
-import { createComponentTemplate } from '../preview/aurelia';
+import { createComponentTemplate } from '../helpers';
 /**
  * Check if the sourcecode should be generated.
  *

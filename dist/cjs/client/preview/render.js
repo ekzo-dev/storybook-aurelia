@@ -17,13 +17,37 @@ require("core-js/modules/es.array.concat.js");
 
 require("core-js/modules/es.object.assign.js");
 
-var _aurelia = require("./aurelia");
+var _helpers = require("../helpers");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var aurelia;
+/**
+ * If props are retrieved from address bar, they are strings. Need to convert to actual types (Boolean/Number)
+ * @param component
+ * @param props
+ */
+// function castStoryProps(component: AureliaFramework['component'], props: ICollection): void {
+//   const bindables = getComponentBindables(component);
+//
+//   bindables.forEach((bindable: PartialBindableDefinition) => {
+//     const prop = props[bindable.property];
+//     if (prop === undefined) return;
+//
+//     const type = bindable.type ?? Metadata.get('design:type', component.prototype, bindable.property);
+//     switch (type) {
+//       case Boolean:
+//
+//       case Number:
+//
+//     }
+//     if (bindable.type === Boolean) {
+//
+//     }
+//   });
+// }
 
 function renderToDOM(_x, _x2) {
   return _renderToDOM.apply(this, arguments);
@@ -63,7 +87,7 @@ function _renderToDOM() {
             return aurelia.stop();
 
           case 8:
-            aurelia = (0, _aurelia.createAureliaApp)(story, component, Object.assign({}, parameters.args, story.props), domElement);
+            aurelia = (0, _helpers.createAureliaApp)(story, component, Object.assign({}, parameters.args, story.props), domElement);
             _context.next = 11;
             return aurelia.start();
 

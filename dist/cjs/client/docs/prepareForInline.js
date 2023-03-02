@@ -31,7 +31,7 @@ require("regenerator-runtime/runtime.js");
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _aurelia = require("../preview/aurelia");
+var _helpers = require("../helpers");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -47,7 +47,7 @@ var prepareForInline = function prepareForInline(storyFn, _ref) {
   var story = storyFn();
   var el = (0, _react.useRef)();
   (0, _react.useEffect)(function () {
-    var au = (0, _aurelia.createAureliaApp)(story, component, args, el.current);
+    var au = (0, _helpers.createAureliaApp)(story, component, args, el.current);
 
     _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
       return regeneratorRuntime.wrap(function _callee$(_context) {

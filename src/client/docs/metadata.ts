@@ -2,20 +2,9 @@ import type { SBType } from '@storybook/csf';
 import type { Component } from '@storybook/docs-tools';
 import * as recast from 'recast';
 import { AssignmentExpression, MemberExpression, Literal, Identifier, Comment } from 'estree';
-import { CustomElement } from 'aurelia';
-
-// eslint-disable-next-line @typescript-eslint/no-namespace
-declare namespace Reflect {
-  function getMetadata(metadataKey: any, target: any, propertyKey?: string | symbol): any;
-}
+import { Metadata, PartialBindableDefinition } from 'aurelia';
 
 export type ComponentAstData = Record<string, { defaultValue: any; comment?: string }>;
-
-export const getComponentBindables = (component: Component) => {
-  const def = CustomElement.getDefinition(component);
-
-  return Object.values(def.bindables);
-};
 
 export const getComponentAstData = (
   component: Component,
@@ -67,14 +56,18 @@ export const getComponentAstData = (
   return data;
 };
 
-export const getPropertyType = (
+export const getBindableType = (
   component: Component,
-  property: string
+  bindable: PartialBindableDefinition
 ): SBType['name'] | undefined => {
-  const metadata = Reflect.getMetadata('design:type', component.prototype, property);
+  const metadata =
+    bindable.type ?? Metadata.get('design:type', component.prototype, bindable.property);
 
   let type: SBType['name'];
   switch (metadata) {
+    // remove eslint-disable when migrate to SB7
+    // eslint-disable-next-line no-undef
+    case BigInt:
     case String:
     case Boolean:
     case Number:
@@ -87,12 +80,4 @@ export const getPropertyType = (
   }
 
   return type;
-};
-
-export const getTypeFromValue = (value: any): SBType['name'] => {
-  if (Array.isArray(value)) {
-    return 'array';
-  }
-
-  return typeof value as SBType['name'];
 };

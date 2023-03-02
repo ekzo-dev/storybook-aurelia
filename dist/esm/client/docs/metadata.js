@@ -1,25 +1,11 @@
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-
-import "core-js/modules/es.object.values.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.regexp.to-string.js";
 import "core-js/modules/es.function.name.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
 import "core-js/modules/es.number.constructor.js";
-import "core-js/modules/es.symbol.js";
-import "core-js/modules/es.symbol.description.js";
-import "core-js/modules/es.symbol.iterator.js";
-import "core-js/modules/es.array.iterator.js";
-import "core-js/modules/es.string.iterator.js";
-import "core-js/modules/web.dom-collections.iterator.js";
 import * as recast from 'recast';
-import { CustomElement } from 'aurelia'; // eslint-disable-next-line @typescript-eslint/no-namespace
-
-export var getComponentBindables = function getComponentBindables(component) {
-  var def = CustomElement.getDefinition(component);
-  return Object.values(def.bindables);
-};
+import { Metadata } from 'aurelia';
 export var getComponentAstData = function getComponentAstData(component, properties) {
   var source = component.prototype.constructor.toString();
   var data = {};
@@ -61,11 +47,16 @@ export var getComponentAstData = function getComponentAstData(component, propert
   });
   return data;
 };
-export var getPropertyType = function getPropertyType(component, property) {
-  var metadata = Reflect.getMetadata('design:type', component.prototype, property);
+export var getBindableType = function getBindableType(component, bindable) {
+  var _bindable$type;
+
+  var metadata = (_bindable$type = bindable.type) !== null && _bindable$type !== void 0 ? _bindable$type : Metadata.get('design:type', component.prototype, bindable.property);
   var type;
 
   switch (metadata) {
+    // remove eslint-disable when migrate to SB7
+    // eslint-disable-next-line no-undef
+    case BigInt:
     case String:
     case Boolean:
     case Number:
@@ -79,11 +70,4 @@ export var getPropertyType = function getPropertyType(component, property) {
   }
 
   return type;
-};
-export var getTypeFromValue = function getTypeFromValue(value) {
-  if (Array.isArray(value)) {
-    return 'array';
-  }
-
-  return _typeof(value);
 };

@@ -9,7 +9,7 @@ var _addons = require("@storybook/addons");
 
 var _docsTools = require("@storybook/docs-tools");
 
-var _aurelia = require("../preview/aurelia");
+var _helpers = require("../helpers");
 
 /**
  * Check if the sourcecode should be generated.
@@ -61,7 +61,7 @@ var sourceDecorator = function sourceDecorator(storyFn, context) {
   if (template) {
     source = template;
   } else if (component) {
-    source = (0, _aurelia.createComponentTemplate)(component, story.innerHtml);
+    source = (0, _helpers.createComponentTemplate)(component, story.innerHtml);
   }
 
   return story;

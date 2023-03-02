@@ -1,9 +1,34 @@
 import type { RenderContext } from '@storybook/store';
 import { Aurelia } from 'aurelia';
 import { AureliaFramework } from './types';
-import { createAureliaApp } from './aurelia';
+import { createAureliaApp } from '../helpers';
 
 let aurelia: Partial<Aurelia>;
+
+/**
+ * If props are retrieved from address bar, they are strings. Need to convert to actual types (Boolean/Number)
+ * @param component
+ * @param props
+ */
+// function castStoryProps(component: AureliaFramework['component'], props: ICollection): void {
+//   const bindables = getComponentBindables(component);
+//
+//   bindables.forEach((bindable: PartialBindableDefinition) => {
+//     const prop = props[bindable.property];
+//     if (prop === undefined) return;
+//
+//     const type = bindable.type ?? Metadata.get('design:type', component.prototype, bindable.property);
+//     switch (type) {
+//       case Boolean:
+//
+//       case Number:
+//
+//     }
+//     if (bindable.type === Boolean) {
+//
+//     }
+//   });
+// }
 
 export async function renderToDOM(
   {

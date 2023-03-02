@@ -1,10 +1,5 @@
 import * as recast from 'recast';
-import { CustomElement } from 'aurelia'; // eslint-disable-next-line @typescript-eslint/no-namespace
-
-export const getComponentBindables = component => {
-  const def = CustomElement.getDefinition(component);
-  return Object.values(def.bindables);
-};
+import { Metadata } from 'aurelia';
 export const getComponentAstData = (component, properties) => {
   const source = component.prototype.constructor.toString();
   const data = {};
@@ -50,11 +45,16 @@ export const getComponentAstData = (component, properties) => {
   });
   return data;
 };
-export const getPropertyType = (component, property) => {
-  const metadata = Reflect.getMetadata('design:type', component.prototype, property);
+export const getBindableType = (component, bindable) => {
+  var _bindable$type;
+
+  const metadata = (_bindable$type = bindable.type) !== null && _bindable$type !== void 0 ? _bindable$type : Metadata.get('design:type', component.prototype, bindable.property);
   let type;
 
   switch (metadata) {
+    // remove eslint-disable when migrate to SB7
+    // eslint-disable-next-line no-undef
+    case BigInt:
     case String:
     case Boolean:
     case Number:
@@ -68,11 +68,4 @@ export const getPropertyType = (component, property) => {
   }
 
   return type;
-};
-export const getTypeFromValue = value => {
-  if (Array.isArray(value)) {
-    return 'array';
-  }
-
-  return typeof value;
 };

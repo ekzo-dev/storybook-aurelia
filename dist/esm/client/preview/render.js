@@ -9,8 +9,33 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-import { createAureliaApp } from './aurelia';
+import { createAureliaApp } from '../helpers';
 var aurelia;
+/**
+ * If props are retrieved from address bar, they are strings. Need to convert to actual types (Boolean/Number)
+ * @param component
+ * @param props
+ */
+// function castStoryProps(component: AureliaFramework['component'], props: ICollection): void {
+//   const bindables = getComponentBindables(component);
+//
+//   bindables.forEach((bindable: PartialBindableDefinition) => {
+//     const prop = props[bindable.property];
+//     if (prop === undefined) return;
+//
+//     const type = bindable.type ?? Metadata.get('design:type', component.prototype, bindable.property);
+//     switch (type) {
+//       case Boolean:
+//
+//       case Number:
+//
+//     }
+//     if (bindable.type === Boolean) {
+//
+//     }
+//   });
+// }
+
 export function renderToDOM(_x, _x2) {
   return _renderToDOM.apply(this, arguments);
 }
