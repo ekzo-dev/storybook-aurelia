@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.webpack = webpack;
 
+var _terserWebpackPlugin = _interopRequireDefault(require("terser-webpack-plugin"));
+
 var _createForkTsCheckerPlugin = _interopRequireDefault(require("./create-fork-ts-checker-plugin"));
 
 var _ts_config = _interopRequireDefault(require("./ts_config"));
@@ -18,9 +20,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function webpack(config, {
-  configDir: configDir
+  configDir: configDir,
+  configType: configType
 }) {
   var tsLoaderOptions = (0, _ts_config.default)(configDir);
+  var production = configType === 'PRODUCTION';
   return _objectSpread(_objectSpread({}, config), {}, {
     resolve: _objectSpread(_objectSpread({}, config.resolve), {}, {
       extensions: [...config.resolve.extensions, '.ts', '.js'],
@@ -44,6 +48,20 @@ function webpack(config, {
         exclude: /node_modules/
       }]
     }),
-    plugins: [...config.plugins, (0, _createForkTsCheckerPlugin.default)(tsLoaderOptions)]
+    plugins: [...config.plugins, (0, _createForkTsCheckerPlugin.default)(tsLoaderOptions)],
+    optimization: _objectSpread(_objectSpread({}, config.optimization), {}, {
+      minimizer: production ? [new _terserWebpackPlugin.default({
+        parallel: true,
+        terserOptions: {
+          mangle: false,
+          sourceMap: true,
+          keep_fnames: true,
+          compress: {
+            // don't compress booleans, otherwise default value detection breaks
+            booleans: false
+          }
+        }
+      })] : []
+    })
   });
 }

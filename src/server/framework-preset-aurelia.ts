@@ -1,12 +1,17 @@
 import { Configuration } from 'webpack';
+import type { Options, ManagerWebpackOptions } from '@storybook/core-common';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import TerserWebpackPlugin from 'terser-webpack-plugin';
 import createForkTsCheckerInstance from './create-fork-ts-checker-plugin';
 import getTsLoaderOptions from './ts_config';
 
 export function webpack(
   config: Configuration,
-  { configDir }: { configDir: string }
+  { configDir, configType }: Options & ManagerWebpackOptions
 ): Configuration {
   const tsLoaderOptions = getTsLoaderOptions(configDir);
+  const production = configType === 'PRODUCTION';
+
   return {
     ...config,
     resolve: {
@@ -44,5 +49,24 @@ export function webpack(
       ],
     },
     plugins: [...config.plugins, createForkTsCheckerInstance(tsLoaderOptions)],
+    optimization: {
+      ...config.optimization,
+      minimizer: production
+        ? [
+            new TerserWebpackPlugin({
+              parallel: true,
+              terserOptions: {
+                mangle: false,
+                sourceMap: true,
+                keep_fnames: true,
+                compress: {
+                  // don't compress booleans, otherwise default value detection breaks
+                  booleans: false,
+                },
+              },
+            }),
+          ]
+        : [],
+    },
   };
 }

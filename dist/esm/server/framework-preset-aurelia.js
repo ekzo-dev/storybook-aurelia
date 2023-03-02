@@ -4,12 +4,16 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+// eslint-disable-next-line import/no-extraneous-dependencies
+import TerserWebpackPlugin from 'terser-webpack-plugin';
 import createForkTsCheckerInstance from './create-fork-ts-checker-plugin';
 import getTsLoaderOptions from './ts_config';
 export function webpack(config, {
-  configDir: configDir
+  configDir: configDir,
+  configType: configType
 }) {
   var tsLoaderOptions = getTsLoaderOptions(configDir);
+  var production = configType === 'PRODUCTION';
   return _objectSpread(_objectSpread({}, config), {}, {
     resolve: _objectSpread(_objectSpread({}, config.resolve), {}, {
       extensions: [...config.resolve.extensions, '.ts', '.js'],
@@ -33,6 +37,20 @@ export function webpack(config, {
         exclude: /node_modules/
       }]
     }),
-    plugins: [...config.plugins, createForkTsCheckerInstance(tsLoaderOptions)]
+    plugins: [...config.plugins, createForkTsCheckerInstance(tsLoaderOptions)],
+    optimization: _objectSpread(_objectSpread({}, config.optimization), {}, {
+      minimizer: production ? [new TerserWebpackPlugin({
+        parallel: true,
+        terserOptions: {
+          mangle: false,
+          sourceMap: true,
+          keep_fnames: true,
+          compress: {
+            // don't compress booleans, otherwise default value detection breaks
+            booleans: false
+          }
+        }
+      })] : []
+    })
   });
 }
