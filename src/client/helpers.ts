@@ -26,12 +26,12 @@ export function createComponentTemplate(
 
   // @ts-ignore
   if (def.type === DefinitionType.Element) {
-    return `<${def.name} ${bindables.map((b) => `${b.attribute}.bind="${b.property}"`).join(' ')}>${
+    return `<${def.name} ${bindables.map((b) => `${b.attribute}.bind="${b.name}"`).join(' ')}>${
       innerHtml ?? ''
     }</${def.name}>`;
   }
 
-  return `${def.name}="${bindables.map((b) => `${b.attribute}.bind: ${b.property}`).join('; ')}"`;
+  return `${def.name}="${bindables.map((b) => `${b.attribute}.bind: ${b.name}`).join('; ')}"`;
 }
 
 export function createAureliaApp(
