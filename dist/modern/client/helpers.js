@@ -10,13 +10,13 @@ export const getComponentDefinition = component => {
 };
 export function createComponentTemplate(component, innerHtml) {
   const def = getComponentDefinition(component);
-  const bindables = Object.values(def.bindables); // @ts-ignore
+  const bindables = Object.entries(def.bindables); // @ts-ignore
 
   if (def.type === DefinitionType.Element) {
-    return `<${def.name} ${bindables.map(b => `${b.attribute}.bind="${b.property}"`).join(' ')}>${innerHtml !== null && innerHtml !== void 0 ? innerHtml : ''}</${def.name}>`;
+    return `<${def.name} ${bindables.map(([n, b]) => `${b.attribute}.bind="${n}"`).join(' ')}>${innerHtml !== null && innerHtml !== void 0 ? innerHtml : ''}</${def.name}>`;
   }
 
-  return `${def.name}="${bindables.map(b => `${b.attribute}.bind: ${b.property}`).join('; ')}"`;
+  return `${def.name}="${bindables.map(([n, b]) => `${b.attribute}.bind: ${n}`).join('; ')}"`;
 }
 export function createAureliaApp(story, component, args, domElement) {
   var _story$items, _story$components;

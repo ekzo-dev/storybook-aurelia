@@ -22,16 +22,16 @@ export function createComponentTemplate(
   innerHtml?: string
 ): string {
   const def = getComponentDefinition(component);
-  const bindables = Object.values(def.bindables);
+  const bindables = Object.entries(def.bindables);
 
   // @ts-ignore
   if (def.type === DefinitionType.Element) {
-    return `<${def.name} ${bindables.map((b) => `${b.attribute}.bind="${b.property}"`).join(' ')}>${
+    return `<${def.name} ${bindables.map(([n, b]) => `${b.attribute}.bind="${n}"`).join(' ')}>${
       innerHtml ?? ''
     }</${def.name}>`;
   }
 
-  return `${def.name}="${bindables.map((b) => `${b.attribute}.bind: ${b.property}`).join('; ')}"`;
+  return `${def.name}="${bindables.map(([n, b]) => `${b.attribute}.bind: ${n}`).join('; ')}"`;
 }
 
 export function createAureliaApp(
