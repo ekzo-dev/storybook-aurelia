@@ -23,9 +23,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getComponentAstData = exports.getBindableType = void 0;
 
+require("core-js/modules/es.object.get-prototype-of.js");
+
 require("core-js/modules/es.object.to-string.js");
 
 require("core-js/modules/es.regexp.to-string.js");
+
+require("core-js/modules/es.string.starts-with.js");
 
 require("core-js/modules/es.function.name.js");
 
@@ -44,9 +48,19 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 var getComponentAstData = function getComponentAstData(component, properties) {
-  var source = component.prototype.constructor.toString();
-  var data = {};
-  var lastProperty;
+  var parent = Object.getPrototypeOf(component);
+  var source = component.constructor.toString();
+  var data;
+  var lastProperty; // TODO: better detection that component is inherited
+
+  if (parent.constructor.toString().startsWith('function Object()')) {
+    // component is not inherited
+    data = {};
+  } else {
+    // component is inherited, so get its data first
+    data = getComponentAstData(parent, properties);
+  }
+
   recast.visit(recast.parse(source), {
     visitAssignmentExpression: function visitAssignmentExpression(_ref) {
       var value = _ref.value;

@@ -10,9 +10,19 @@ export const getComponentAstData = (
   component: Component,
   properties: string[]
 ): ComponentAstData => {
-  const source = component.prototype.constructor.toString();
-  const data: ComponentAstData = {};
+  const parent = Object.getPrototypeOf(component);
+  const source = component.constructor.toString();
+  let data: ComponentAstData;
   let lastProperty: string;
+
+  // TODO: better detection that component is inherited
+  if (parent.constructor.toString().startsWith('function Object()')) {
+    // component is not inherited
+    data = {};
+  } else {
+    // component is inherited, so get its data first
+    data = getComponentAstData(parent, properties);
+  }
 
   recast.visit(recast.parse(source), {
     visitAssignmentExpression: ({ value }: { value: AssignmentExpression }) => {

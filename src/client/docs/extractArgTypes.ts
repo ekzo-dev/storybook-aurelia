@@ -9,7 +9,7 @@ export const extractArgTypes: ArgTypesExtractor = (component) => {
   if (!component) return null;
 
   const def = getComponentDefinition(component);
-  const astData = getComponentAstData(component, Object.keys(def.bindables));
+  const astData = getComponentAstData(component.prototype, Object.keys(def.bindables));
 
   return Object.values(def.bindables).reduce((acc: StrictArgTypes, bindable) => {
     // get all available metadata

@@ -7,7 +7,7 @@ const shouldEncode = obj => (obj === null || obj === void 0 ? void 0 : obj.toStr
 export const extractArgTypes = component => {
   if (!component) return null;
   const def = getComponentDefinition(component);
-  const astData = getComponentAstData(component, Object.keys(def.bindables));
+  const astData = getComponentAstData(component.prototype, Object.keys(def.bindables));
   return Object.values(def.bindables).reduce((acc, bindable) => {
     // get all available metadata
     const type = getBindableType(component, bindable);

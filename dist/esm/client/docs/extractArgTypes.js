@@ -12,7 +12,7 @@ var shouldEncode = function shouldEncode(obj) {
 export var extractArgTypes = function extractArgTypes(component) {
   if (!component) return null;
   var def = getComponentDefinition(component);
-  var astData = getComponentAstData(component, Object.keys(def.bindables));
+  var astData = getComponentAstData(component.prototype, Object.keys(def.bindables));
   return Object.values(def.bindables).reduce(function (acc, bindable) {
     // get all available metadata
     var type = getBindableType(component, bindable);

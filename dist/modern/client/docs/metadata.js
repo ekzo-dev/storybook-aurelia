@@ -1,9 +1,19 @@
 import * as recast from 'recast';
 import { Metadata } from 'aurelia';
 export const getComponentAstData = (component, properties) => {
-  const source = component.prototype.constructor.toString();
-  const data = {};
-  let lastProperty;
+  const parent = Object.getPrototypeOf(component);
+  const source = component.constructor.toString();
+  let data;
+  let lastProperty; // TODO: better detection that component is inherited
+
+  if (parent.constructor.toString().startsWith('function Object()')) {
+    // component is not inherited
+    data = {};
+  } else {
+    // component is inherited, so get its data first
+    data = getComponentAstData(parent, properties);
+  }
+
   recast.visit(recast.parse(source), {
     visitAssignmentExpression: ({
       value

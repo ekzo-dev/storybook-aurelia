@@ -1,5 +1,7 @@
+import "core-js/modules/es.object.get-prototype-of.js";
 import "core-js/modules/es.object.to-string.js";
 import "core-js/modules/es.regexp.to-string.js";
+import "core-js/modules/es.string.starts-with.js";
 import "core-js/modules/es.function.name.js";
 import "core-js/modules/es.array.includes.js";
 import "core-js/modules/es.string.includes.js";
@@ -7,9 +9,19 @@ import "core-js/modules/es.number.constructor.js";
 import * as recast from 'recast';
 import { Metadata } from 'aurelia';
 export var getComponentAstData = function getComponentAstData(component, properties) {
-  var source = component.prototype.constructor.toString();
-  var data = {};
-  var lastProperty;
+  var parent = Object.getPrototypeOf(component);
+  var source = component.constructor.toString();
+  var data;
+  var lastProperty; // TODO: better detection that component is inherited
+
+  if (parent.constructor.toString().startsWith('function Object()')) {
+    // component is not inherited
+    data = {};
+  } else {
+    // component is inherited, so get its data first
+    data = getComponentAstData(parent, properties);
+  }
+
   recast.visit(recast.parse(source), {
     visitAssignmentExpression: function visitAssignmentExpression(_ref) {
       var value = _ref.value;
