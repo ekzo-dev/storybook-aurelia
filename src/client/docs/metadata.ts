@@ -26,10 +26,17 @@ export const getComponentAstData = (
         const { name } = (left as MemberExpression).property as Identifier;
 
         if (properties.includes(name)) {
-          const defaultValue =
-            right.type === 'Literal'
-              ? (right as Literal).value
-              : JSON.parse(recast.print(right).code);
+          let defaultValue;
+          if (right.type === 'Literal') {
+            defaultValue = (right as Literal).value;
+          } else {
+            const { code } = recast.prettyPrint(right, { quote: 'double' });
+            try {
+              defaultValue = JSON.parse(code);
+            } catch (e) {
+              console.warn('[Storybook Aurelia] Cannot parse default value from code', code);
+            }
+          }
 
           data[name] = {
             defaultValue,

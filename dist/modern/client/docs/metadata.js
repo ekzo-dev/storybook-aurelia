@@ -19,7 +19,24 @@ export const getComponentAstData = (component, properties) => {
         } = left.property;
 
         if (properties.includes(name)) {
-          const defaultValue = right.type === 'Literal' ? right.value : JSON.parse(recast.print(right).code);
+          let defaultValue;
+
+          if (right.type === 'Literal') {
+            defaultValue = right.value;
+          } else {
+            const {
+              code
+            } = recast.prettyPrint(right, {
+              quote: 'double'
+            });
+
+            try {
+              defaultValue = JSON.parse(code);
+            } catch (e) {
+              console.warn('[Storybook Aurelia] Cannot parse default value from code', code);
+            }
+          }
+
           data[name] = {
             defaultValue
           };

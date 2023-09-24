@@ -58,7 +58,23 @@ var getComponentAstData = function getComponentAstData(component, properties) {
             name = _ref2.name;
 
         if (properties.includes(name)) {
-          var defaultValue = right.type === 'Literal' ? right.value : JSON.parse(recast.print(right).code);
+          var defaultValue;
+
+          if (right.type === 'Literal') {
+            defaultValue = right.value;
+          } else {
+            var _recast$prettyPrint = recast.prettyPrint(right, {
+              quote: 'double'
+            }),
+                code = _recast$prettyPrint.code;
+
+            try {
+              defaultValue = JSON.parse(code);
+            } catch (e) {
+              console.warn('[Storybook Aurelia] Cannot parse default value from code', code);
+            }
+          }
+
           data[name] = {
             defaultValue: defaultValue
           };
