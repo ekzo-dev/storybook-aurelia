@@ -63,6 +63,10 @@ export function webpack(
                   // don't compress booleans, otherwise default value detection breaks
                   booleans: false,
                 },
+                format: {
+                  // keep number literals as it was in original code, otherwise default value detection breaks
+                  keep_numbers: true,
+                },
               },
             }),
           ]
